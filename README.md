@@ -1,73 +1,58 @@
-🏝️ ALX Travel App 0x01 – API Development for Listings and Bookings
-📌 Overview
+# 🛫 ALX Travel App 0x03
 
-This project is part of the ALX Backend Django & DRF learning series.
-In alx_travel_app_0x01, we implemented API endpoints for managing Listings and Bookings using Django REST Framework (DRF) and documented them with Swagger UI.
+A Django-based travel booking application extended with **Celery** and **RabbitMQ** for background task management.  
+This version introduces **asynchronous email notifications** to confirm bookings without blocking the main application flow.  
 
-The app allows users to:
+---
 
-View, create, update, and delete Listings.
+## 🚀 Features
+- User can create and manage travel bookings.
+- Booking confirmation emails are sent asynchronously using **Celery workers**.
+- **RabbitMQ** is used as the message broker.
+- Django REST Framework (DRF) provides API endpoints for bookings.
+- Configurable email backend (console, SMTP, or third-party like Gmail/SendGrid).
 
-View, create, update, and delete Bookings.
+---
 
-Explore the API via Swagger documentation.
-
-📂 Project Structure
-alx_travel_app/
-│
-├── listings/
-│   ├── migrations/              # Database migrations
-│   ├── management/              # Custom management commands
-│   ├── templates/               # HTML templates (if needed)
-│   ├── models.py                 # Listing, Booking, Review models
-│   ├── serializers.py            # DRF serializers
-│   ├── views.py                  # API ViewSets
-│   ├── urls.py                   # API routes
-│   └── admin.py                  # Admin panel configuration
+## 📂 Project Structure
+alx_travel_app_0x03/
 │
 ├── alx_travel_app/
-│   ├── settings.py               # Django settings
-│   ├── urls.py                   # Project URL configuration
-│   └── wsgi.py                   # WSGI entry point
+│ ├── init.py # Initializes Celery app
+│ ├── settings.py # Django + Celery configuration
+│ ├── urls.py # Project URLs
+│ ├── wsgi.py
+│ ├── asgi.py
+│ ├── celery.py # Celery configuration file
 │
-├── manage.py                     # Django management script
-└── README.md                     # Project documentation
+├── listings/
+│ ├── init.py
+│ ├── models.py # Booking model
+│ ├── serializers.py # Booking serializer
+│ ├── views.py # Triggers Celery task on booking
+│ ├── tasks.py # Celery email task
+│ ├── admin.py
+│ ├── apps.py
+│ └── migrations/
+│
+├── manage.py
+├── README.md
+├── requirements.txt # Project dependencies
+
+## 🛠️ Tech Stack
+- **Backend Framework**: Django 5.x
+- **API Framework**: Django REST Framework
+- **Task Queue**: Celery 5.x
+- **Broker**: RabbitMQ
+- **Database**: SQLite (default, configurable)
+- **Email**: Django Email Backend
 
 
-🌐 API Endpoints
+
+📌 API Endpoints
 Method	Endpoint	Description
-GET	/api/listings/	Get all listings
-POST	/api/listings/	Create new listing
-GET	/api/listings/{id}/	Get listing by ID
-PUT	/api/listings/{id}/	Update listing
-DELETE	/api/listings/{id}/	Delete listing
-GET	/api/bookings/	Get all bookings
-POST	/api/bookings/	Create new booking
-GET	/api/bookings/{id}/	Get booking by ID
-PUT	/api/bookings/{id}/	Update booking
-DELETE	/api/bookings/{id}/	Delete booking
-📜 Swagger Documentation
-
-Once the server is running, open your browser and visit:
-
-http://127.0.0.1:8000/swagger/
-
-
-Here you can test endpoints interactively and explore the API schema.
-
-🛠 Tech Stack
-
-Python 3.x
-
-Django 5.x
-
-Django REST Framework
-
-drf-yasg (Swagger/OpenAPI docs)
-
-SQLite (Default DB, can be changed to PostgreSQL/MySQL)
-
-🚀 Author
-
-Kizito Azegba
-Backend Developer | Django & DRF Specialist
+GET	/bookings/	List all bookings
+POST	/bookings/	Create a new booking
+GET	/bookings/1/	Retrieve a specific booking
+PUT	/bookings/1/	Update a booking
+DELETE	/bookings/1/	Delete a booking
